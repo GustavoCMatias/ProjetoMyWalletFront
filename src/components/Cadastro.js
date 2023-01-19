@@ -1,14 +1,17 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-export default function Cadastro(){
+export default function Cadastro() {
     const [nome, setNome] = React.useState('')
     const [email, setEmail] = React.useState('')
     const [senha, setSenha] = React.useState('')
     const [conf, setConf] = React.useState('')
+    const nav = useNavigate()
 
-    function Cadastrar(e){
+    function Cadastrar(e) {
         e.preventDefault()
+        nav('/')
         return
     }
 
@@ -17,7 +20,7 @@ export default function Cadastro(){
 
             <h1>MyWallet</h1>
             <form onSubmit={Cadastrar}>
-            <input type="text"
+                <input type="text"
                     value={nome}
                     onChange={e => setNome(e.target.value)}
                     placeholder="Nome"
@@ -33,7 +36,7 @@ export default function Cadastro(){
                     onChange={e => setSenha(e.target.value)}
                     placeholder="Senha"
                     required />
-                
+
                 <input type="text"
                     value={conf}
                     onChange={e => setConf(e.target.value)}
@@ -42,7 +45,10 @@ export default function Cadastro(){
 
                 <button type="submit">Cadastrar</button>
             </form>
-            <p>Já tem uma conta? Entre agora!</p>
+            <Link to="/">
+                <p>Já tem uma conta? Entre agora!</p>
+            </Link>
+
         </TelaCadastro>
     )
 

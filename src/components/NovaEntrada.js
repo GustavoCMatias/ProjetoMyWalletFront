@@ -1,65 +1,61 @@
 import React from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 
+export default function NovaEntrada(){
 
-export default function Login() {
-    const [email, setEmail] = React.useState('')
-    const [senha, setSenha] = React.useState('')
+    const [valor, setValor] = React.useState('')
+    const [descricao, setDescricao] = React.useState('')
     const nav = useNavigate()
 
-    function FazerLogin(e) {
+    function CadastarEntrada(e) {
         e.preventDefault()
         console.log('show')
 
-        setEmail('')
-        setSenha('')
-        nav('/Home')
+        setValor('')
+        setDescricao('')
+        nav("/Home")
         return
     }
+
     return (
-        <TelaLogin>
+        <TelaEntrada>
 
-            <h1>MyWallet</h1>
-            <form onSubmit={FazerLogin}>
-                <input type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    placeholder="E-mail"
+            <h1>Nova entrada</h1>
+            <form onSubmit={CadastarEntrada}>
+                <input type="number"
+                    value={valor}
+                    onChange={e => setValor(e.target.value)}
+                    placeholder="Valor"
                     required />
 
-                <input type="password"
-                    value={senha}
-                    onChange={e => setSenha(e.target.value)}
-                    placeholder="Senha"
+                <input type="text"
+                    value={descricao}
+                    onChange={e => setDescricao(e.target.value)}
+                    placeholder="Descrição"
                     required />
 
-                <button type="submit">Entrar</button>
+                <button type="submit">Salvar entrada</button>
             </form>
-            <Link to="/Cadastro">
-                <p>Primeira vez? Cadastre-se!</p>
-            </Link>
-        </TelaLogin>
+        </TelaEntrada>
     )
 }
 
-
-const TelaLogin = styled.div`
-    padding-top: 159px;
+const TelaEntrada = styled.div`
+    padding-top: 25px;
     form{
         display: flex;
         flex-direction: column;
     }
     h1{
-        font-family: 'Saira Stencil One';
-        font-size: 32px;
-        font-weight: 400;
-        line-height: 50px;
-        letter-spacing: 0em;
-        text-align: center;
+        font-family: Raleway;
+        font-size: 26px;
+        font-weight: 700;
+        text-align: left;
         color: #FFFFFF;
 
-        margin-bottom: 24px;
+        padding-left: 25px;
+        margin-bottom: 40px;
 
     }
     input{
@@ -107,13 +103,8 @@ const TelaLogin = styled.div`
         color: #FFFFFF;
 
         margin-top: 36px;
-        :link{
-            text-decoration: none;
-        }
-        
 
     }
-    
 
 
 
