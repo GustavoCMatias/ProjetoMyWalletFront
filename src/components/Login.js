@@ -1,6 +1,7 @@
 import React from "react"
 import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import axios from "axios"
 
 
 export default function Login() {
@@ -8,14 +9,19 @@ export default function Login() {
     const [senha, setSenha] = React.useState('')
     const nav = useNavigate()
 
-    function FazerLogin(e) {
+    async function FazerLogin(e) {
         e.preventDefault()
-        console.log('show')
 
-        setEmail('')
-        setSenha('')
-        nav('/Home')
-        return
+        axios.post('http://localhost:5000', {email, senha})
+            .then((res) => {
+                console.log(res)
+                nav('/Home')
+            })
+            .catch(() => {
+                alert('Usuário/senha inválido(s)')
+                setEmail('')
+                setSenha('')
+            })
     }
     return (
         <TelaLogin>

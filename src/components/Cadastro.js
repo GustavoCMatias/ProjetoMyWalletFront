@@ -1,17 +1,31 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
 export default function Cadastro() {
     const [nome, setNome] = React.useState('')
     const [email, setEmail] = React.useState('')
     const [senha, setSenha] = React.useState('')
-    const [conf, setConf] = React.useState('')
+    const [confirmacao, setConfirmacao] = React.useState('')
     const nav = useNavigate()
 
     function Cadastrar(e) {
         e.preventDefault()
-        nav('/')
+        if(senha!==confirmacao)return alert('Senha está diferente da confirmação')
+        axios.post('http://localhost:5000/cadastro', {nome, email, senha, confirmacao})
+            .then(()=>{
+                alert('Cadastro realizado com sucesso')
+                nav('/')
+            })
+            .catch((erro)=> {
+                alert(erro.response.data)
+                setNome('')
+                setEmail('')
+                setSenha('')
+                setConfirmacao('')
+            })
+        
         return
     }
 
@@ -38,8 +52,8 @@ export default function Cadastro() {
                     required />
 
                 <input type="text"
-                    value={conf}
-                    onChange={e => setConf(e.target.value)}
+                    value={confirmacao}
+                    onChange={e => setConfirmacao(e.target.value)}
                     placeholder="Confirme a senha"
                     required />
 
