@@ -1,20 +1,23 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import axios from "axios"
+import AuthContext from "../contexts/AuthContext"
 
 
 export default function Login() {
     const [email, setEmail] = React.useState('')
     const [senha, setSenha] = React.useState('')
     const nav = useNavigate()
+    const {setToken} = useContext(AuthContext)
 
     async function FazerLogin(e) {
         e.preventDefault()
 
         axios.post('http://localhost:5000', {email, senha})
             .then((res) => {
-                console.log(res)
+                console.log(res.data)
+                setToken(res.data)
                 nav('/Home')
             })
             .catch(() => {

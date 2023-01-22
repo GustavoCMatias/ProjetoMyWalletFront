@@ -4,9 +4,44 @@ import sair from "../img/Vector.png"
 import mais from "../img/plus.png"
 import menos from "../img/minus.png"
 import { Link } from "react-router-dom"
+import React, { useContext, useEffect } from "react"
+import axios from "axios"
+import AuthContext from "../contexts/AuthContext";
+
 
 
 export default function Home() {
+    const { token } = useContext(AuthContext)
+    const [registros, setRegistros] = React.useState([])
+    const [valorSaldo, setValorSaldo] = React.useState(0)
+
+    function saldo(extrato){
+        let saldo = 0
+        extrato.forEach(element => {
+            if(element.tipo === 'saida'){
+                saldo-=element.valor
+            }else{
+                saldo+=element.valor
+            }
+
+        });
+        return saldo;
+    }
+
+    useEffect(() => {
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+        const req = axios.get('http://localhost:5000/registros', config)
+            .then((res) => {
+                setRegistros(res.data)
+                setValorSaldo(saldo(res.data))
+
+            })
+    }, [])
+
     return (
         <TelaHome>
             <div>
@@ -16,7 +51,20 @@ export default function Home() {
                 </Link>
             </div>
 
-            <Registro></Registro>
+            <Registro>
+                <div className="registros">
+                {registros.map((item) =>
+                    <div className="item">
+                        <span>
+                            <span className="cinza">01/01</span> <span> {item.descricao}</span>
+                        </span>
+                        <span className={item.tipo === 'saida' ? 'vermelho' : 'verde'}>{item.valor}</span>
+                    </div>
+                )}
+                <p className={!registros ? '' : 'esconder'}>Não há registros de <br />entrada ou saída</p>
+                </div>
+                <div className={registros?"item":"esconder"} ><span className="saldo"> SALDO</span> <span className={valorSaldo<0?'vermelho':'verde'}>{Math.abs(valorSaldo)}</span></div>
+            </Registro>
             <div>
                 <Link to="/nova-entrada">
                     <button>
@@ -77,13 +125,71 @@ const TelaHome = styled.div`
 `
 
 const Registro = styled.div`
-    height: 430px;
+    height: 446px;
     width: 326px;
     border-radius: 5px;
 
     margin-top: 17px;
     margin-bottom: 13px;
 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
     background-color: #FFFFFF;
+    overflow: hidden;
+
+    padding: 23px 12px 10px 12px;
+
+    p{
+        font-family: Raleway;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 23px;
+        letter-spacing: 0em;
+        text-align: center;
+        color: #868686;
+
+        margin: auto;
+
+    }
+
+    .esconder{
+        display: none;
+    }
+
+    .item{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    span{
+        font-family: Raleway;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 19px;
+        letter-spacing: 0em;
+        color: black;
+
+
+    }
+    .registros{
+        display: flex;
+        flex-direction: column;
+    }
+    .vermelho{
+        color: #C70000;
+    }
+    .verde{
+        color: #03AC00;
+    }
+    .cinza{
+        color: #C6C6C6;
+        margin-right: 8px;
+    }
+    .saldo{
+        font-weight: 700;
+    }
 
 `

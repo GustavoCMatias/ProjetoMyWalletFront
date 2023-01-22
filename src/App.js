@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import AuthContext from "./contexts/AuthContext.js";
 import GlobalStyle from './globalStyles.js'
 
 
@@ -14,21 +14,23 @@ import NovaSaida from "./components/NovaSaida.js";
 
 function App() {
 
-
+  const [token, setToken] = React.useState('')
   return (
-    <BrowserRouter>
-      <GlobalStyle />
-      <Tela>
-        <Routes>
-          <Route path="/" element={<Login/>}/>
-          <Route path="/cadastro" element={<Cadastro/>}/>
-          <Route path="/home" element={<Home/>}/>
-          <Route path="/nova-entrada" element={<NovaEntrada/>}/>
-          <Route path="/nova-saida" element={<NovaSaida/>}/>
+    <AuthContext.Provider value={{ token, setToken }}>
+      <BrowserRouter>
+        <GlobalStyle />
+        <Tela>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/nova-entrada" element={<NovaEntrada />} />
+            <Route path="/nova-saida" element={<NovaSaida />} />
 
-        </Routes>
-      </Tela>
-    </BrowserRouter>
+          </Routes>
+        </Tela>
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 
