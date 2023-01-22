@@ -15,7 +15,7 @@ export default function NovaSaida(){
 
         const config = {
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token.token}`
             }
         }
         axios.post('http://localhost:5000/registros', {valor, descricao, tipo:'saida'}, config)

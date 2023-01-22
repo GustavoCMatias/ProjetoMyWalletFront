@@ -15,7 +15,7 @@ export default function NovaEntrada(){
 
         const config = {
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token.token}`
             }
         }
 

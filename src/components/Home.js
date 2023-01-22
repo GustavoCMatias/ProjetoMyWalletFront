@@ -31,7 +31,7 @@ export default function Home() {
     useEffect(() => {
         const config = {
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token.token}`
             }
         }
         axios.get('http://localhost:5000/registros', config)
@@ -45,7 +45,7 @@ export default function Home() {
     return (
         <TelaHome>
             <div>
-                <h1>Olá, Fulano</h1>
+                <h1>Olá, {token.nome}</h1>
                 <Link to="/">
                     <img src={sair} alt="sair" />
                 </Link>
