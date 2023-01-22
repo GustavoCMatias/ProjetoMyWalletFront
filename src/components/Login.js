@@ -16,7 +16,6 @@ export default function Login() {
 
         axios.post('http://localhost:5000', {email, senha})
             .then((res) => {
-                console.log(res.data)
                 setToken(res.data)
                 nav('/Home')
             })

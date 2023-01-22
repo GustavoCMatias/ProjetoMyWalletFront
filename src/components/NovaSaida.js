@@ -1,21 +1,33 @@
-import React from "react"
+import axios from "axios"
+import React, { useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import AuthContext from "../contexts/AuthContext"
 
 export default function NovaSaida(){
-
+    const { token } = useContext(AuthContext)
     const [valor, setValor] = React.useState('')
     const [descricao, setDescricao] = React.useState('')
     const nav = useNavigate()
 
     function CadastarEntrada(e) {
         e.preventDefault()
-        console.log('show')
 
-        setValor('')
-        setDescricao('')
-        nav("/Home")
-        return
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+        axios.post('http://localhost:5000/registros', {valor, descricao, tipo:'saida'}, config)
+            .then(() => {
+                alert("Saída registrada com sucesso")
+                nav("/Home")
+            })
+            .catch(() => {
+                alert("Insira os dados corretamente!")
+                setValor('')
+                setDescricao('')
+            })
     }
 
     return (

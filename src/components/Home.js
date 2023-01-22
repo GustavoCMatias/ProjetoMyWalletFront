@@ -15,13 +15,13 @@ export default function Home() {
     const [registros, setRegistros] = React.useState([])
     const [valorSaldo, setValorSaldo] = React.useState(0)
 
-    function saldo(extrato){
+    function saldo(extrato) {
         let saldo = 0
         extrato.forEach(element => {
-            if(element.tipo === 'saida'){
-                saldo-=element.valor
-            }else{
-                saldo+=element.valor
+            if (element.tipo === 'saida') {
+                saldo -= Number(element.valor)
+            } else {
+                saldo += Number(element.valor)
             }
 
         });
@@ -34,7 +34,7 @@ export default function Home() {
                 "Authorization": `Bearer ${token}`
             }
         }
-        const req = axios.get('http://localhost:5000/registros', config)
+        axios.get('http://localhost:5000/registros', config)
             .then((res) => {
                 setRegistros(res.data)
                 setValorSaldo(saldo(res.data))
@@ -53,17 +53,19 @@ export default function Home() {
 
             <Registro>
                 <div className="registros">
-                {registros.map((item) =>
-                    <div className="item">
-                        <span>
-                            <span className="cinza">01/01</span> <span> {item.descricao}</span>
-                        </span>
-                        <span className={item.tipo === 'saida' ? 'vermelho' : 'verde'}>{item.valor}</span>
-                    </div>
-                )}
-                <p className={!registros ? '' : 'esconder'}>Não há registros de <br />entrada ou saída</p>
+                    {registros.map((item, id) =>
+                        <div className="item" key={id}>
+                            <span>
+                                <span className="cinza">{item.data}</span> <span> {item.descricao}</span>
+                            </span>
+                            <span className={item.tipo === 'saida' ? 'vermelho' : 'verde'}>{item.valor}</span>
+                        </div>
+                    )}
+                    <p className={registros.length>0 ? 'esconder' : 'mostrar'}>Não há registros de <br />entrada ou saída</p>
                 </div>
-                <div className={registros?"item":"esconder"} ><span className="saldo"> SALDO</span> <span className={valorSaldo<0?'vermelho':'verde'}>{Math.abs(valorSaldo)}</span></div>
+                <div className={registros.length>0 ? "item" : "esconder"} >
+                    <span className="saldo"> SALDO</span> <span className={valorSaldo < 0 ? 'vermelho' : 'verde'}>{Math.abs(valorSaldo).toFixed(2)}</span>
+                </div>
             </Registro>
             <div>
                 <Link to="/nova-entrada">
@@ -137,7 +139,7 @@ const Registro = styled.div`
     justify-content: flex-start;
 
     background-color: #FFFFFF;
-    overflow: hidden;
+    overflow: auto;
 
     padding: 23px 12px 10px 12px;
 
@@ -152,6 +154,10 @@ const Registro = styled.div`
 
         margin: auto;
 
+    }
+
+    .mostrar{
+        margin-top: 180px;
     }
 
     .esconder{
